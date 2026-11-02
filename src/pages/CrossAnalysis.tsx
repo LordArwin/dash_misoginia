@@ -14,6 +14,8 @@ const PRESETS: { label: string; row: QuestionId; col: QuestionId }[] = [
   { label: 'Conhecimento prévio sobre misoginia × percepção de desigualdade', row: 'q1_misoginia', col: 'q1_tratamento' },
   { label: 'Conhecimento sobre DH × compreensão da relação com misoginia', row: 'q1_dh', col: 'q1_relacao' },
   { label: 'Série escolar × conhecimento prévio', row: 'ano', col: 'q1_misoginia' },
+  { label: 'Escola × conhecimento prévio sobre misoginia', row: 'escola', col: 'q1_misoginia' },
+  { label: 'Escola × mudança de percepção (após)', row: 'escola', col: 'q2_percepcao' },
   { label: 'Percepção inicial × avaliação posterior', row: 'q1_tratamento', col: 'q2_percepcao' },
   { label: 'Conhecimento inicial × capacidade declarada de identificar (após)', row: 'q1_misoginia', col: 'q2_identificar' },
   { label: 'Relação DH × misoginia: antes × compreensão após', row: 'q1_relacao', col: 'q2_compreensao' },

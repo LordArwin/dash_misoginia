@@ -6,17 +6,19 @@ A aplicação é 100% estática: lê a planilha `Base Questionarios.xlsx` direta
 
 ## Estrutura dos dados
 
-Arquivo `Base Questionarios.xlsx`, aba `Página1`, intervalo `A1:R22`.
+Arquivo `Base Questionarios.xlsx`, aba `Página1`, intervalo `A1:R51`.
 
 | Colunas | Bloco | Conteúdo |
 |---|---|---|
 | A–C | Perfil | `IDADE`, `GENERO`, `ANO_ESCOLAR` |
 | D–L | Questionário 01 | 9 perguntas de diagnóstico inicial (conhecimento, percepções, experiências) |
 | M–Q | Questionário 02 | 5 perguntas de avaliação após a apresentação |
-| R | Perfil | `Escola` (valor único: Brasília) |
+| R | Perfil | `Escola` (Brasília: 21 · EEEFM Mariana: 29) |
 
-- Linha 1 = cabeçalhos; linhas 2–22 = **21 participantes**. Cada linha é um participante, com as respostas dos dois questionários.
-- Sem valores ausentes, sem alternativas inesperadas, sem registros duplicados.
+- Linha 1 = cabeçalhos; linhas 2–51 = **50 participantes** (linhas 2–22: Brasília; 23–51: EEEFM Mariana). Cada linha é um participante, com as respostas dos dois questionários.
+- Os 21 registros da versão anterior (Brasília) estão preservados sem alteração.
+- 1 valor ausente (coluna G, linha 28); sem alternativas fora do catálogo; sem registros duplicados.
+- Escola e série estão sobrepostas: Brasília só tem 1º/2º ano e EEEFM Mariana só 3º ano/“Outro”. Diferenças entre escolas não se separam de diferenças entre séries/idades (aviso exibido no painel).
 - Inconsistência encontrada: espaços excedentes no início/fim das respostas (ex.: `" Masculino  "`, `"Feminino     "`), unificados pela normalização e listados na página Metodologia.
 - Não há coluna de identificação: o vínculo Q1 × Q2 é a própria linha.
 
@@ -37,7 +39,7 @@ src/
               insights.ts (achados por regras), filters.ts, format.ts
   state/      AppState.tsx (carregamento, filtros globais, modo apresentação)
   components/ charts/ (barras, empilhadas, mapa de calor), analysis/, layout/, common/
-  pages/      8 páginas do painel
+  pages/      9 páginas do painel (inclui Comparação entre escolas)
 tests/        testes unitários e de integração com a planilha real
 .github/workflows/deploy.yml
 ```
@@ -91,6 +93,6 @@ A navegação usa `HashRouter` (`.../#/perfil`), portanto recarregar páginas in
 
 ## Limitações
 
-- Amostra pequena (21) e de uma única escola; grupos desbalanceados (2º ano: 3; 16–18 anos: 5).
+- Amostra pequena (50) e de apenas duas escolas, sobrepostas com a série escolar; grupos pequenos (2º ano: 3; “Outro”: 1; 19 anos ou mais: 3).
 - O formulário original não estava disponível: o catálogo contém só as alternativas observadas (ex.: “Prefiro não responder” não aparece com zero).
 - Medidas autorrelatadas; experiências relatadas não medem incidência de violência.

@@ -215,3 +215,30 @@ export function roundedPercents(counts: number[], decimals = 1): number[] {
   }
   return floors.map((v) => v / factor)
 }
+
+export interface Nesting {
+  /** true quando cada categoria de `inner` aparece em uma única categoria de `outer` (e há mais de uma de `outer`). */
+  nested: boolean
+  /** Para cada categoria de `outer`, as categorias de `inner` presentes. */
+  byOuter: { outer: string; inner: string[] }[]
+}
+
+/**
+ * Verifica se duas variáveis de perfil estão sobrepostas (ex.: cada série escolar só
+ * ocorre em uma escola). Nesse caso, diferenças entre `outer` não podem ser separadas
+ * de diferenças entre `inner`.
+ */
+export function nesting(ps: Participant[], outer: ResolvedQuestion, inner: ResolvedQuestion): Nesting {
+  const byOuter = outer.alternatives
+    .map((a) => ({
+      outer: a.label,
+      inner: inner.alternatives
+        .map((b) => b.label)
+        .filter((b) => ps.some((p) => p.answers[outer.id] === a.label && p.answers[inner.id] === b)),
+    }))
+    .filter((x) => x.inner.length > 0)
+  const owners = new Map<string, number>()
+  for (const x of byOuter) for (const v of x.inner) owners.set(v, (owners.get(v) ?? 0) + 1)
+  const nested = byOuter.length > 1 && [...owners.values()].every((n) => n === 1)
+  return { nested, byOuter }
+}

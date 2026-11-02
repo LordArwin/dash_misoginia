@@ -15,7 +15,7 @@ interface Props {
 }
 
 /** Barras empilhadas 100% de uma pergunta segundo uma dimensão de perfil selecionável. */
-export function CrossByDimension({ qid, title, dims = ['ano', 'idade', 'genero'] }: Props) {
+export function CrossByDimension({ qid, title, dims = ['escola', 'ano', 'idade', 'genero'] }: Props) {
   const { q, filtered, profileDims } = useAnalysis()
   const available = dims.filter((d) => profileDims.includes(d))
   const [dim, setDim] = useState<QuestionId>(available[0] ?? 'ano')
@@ -63,7 +63,8 @@ export function GroupDifference({ qid, by }: { qid: QuestionId; by: QuestionId }
   const groupIds = [...new Set(question.alternatives.map((a) => a.group))]
   const options = [
     ...groupIds
-      .filter((g) => question.alternatives.filter((a) => a.group === g).length > 1)
+      // Variáveis de perfil não têm agrupamentos analíticos (grupo único "Valor").
+      .filter((g) => question.questionnaire !== 'perfil' && question.alternatives.filter((a) => a.group === g).length > 1)
       .map((g) => ({ value: `g:${g}`, label: `Grupo: ${question.groups.find((x) => x.id === g)?.label ?? g}` })),
     ...question.alternatives.map((a) => ({ value: `a:${a.label}`, label: a.label })),
   ]

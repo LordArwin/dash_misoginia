@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, BookOpen, Scale, MessageSquareWarning, ClipboardCheck, Grid3x3, FileSearch, type LucideIcon } from 'lucide-react'
+import { LayoutDashboard, Users, School, BookOpen, Scale, MessageSquareWarning, ClipboardCheck, Grid3x3, FileSearch, type LucideIcon } from 'lucide-react'
 
 export interface RouteDef {
   path: string
@@ -11,6 +11,7 @@ export interface RouteDef {
 export const ROUTES: RouteDef[] = [
   { path: '/', label: 'Visão geral', icon: LayoutDashboard, scope: 'ambos' },
   { path: '/perfil', label: 'Perfil dos participantes', icon: Users, scope: 'perfil' },
+  { path: '/escolas', label: 'Comparação entre escolas', icon: School, scope: 'ambos' },
   { path: '/conhecimento', label: 'Conhecimento prévio', icon: BookOpen, scope: 'q1' },
   { path: '/percepcoes', label: 'Percepções sobre desigualdade', icon: Scale, scope: 'q1' },
   { path: '/experiencias', label: 'Experiências relatadas', icon: MessageSquareWarning, scope: 'q1' },

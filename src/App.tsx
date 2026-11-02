@@ -10,6 +10,7 @@ import { Experiences } from './pages/Experiences'
 import { PostEvaluation } from './pages/PostEvaluation'
 import { CrossAnalysis } from './pages/CrossAnalysis'
 import { Methodology } from './pages/Methodology'
+import { Schools } from './pages/Schools'
 
 function Content() {
   const { state, reload } = useData()
@@ -22,6 +23,7 @@ function Content() {
         <Routes>
           <Route path="/" element={<Overview />} />
           <Route path="/perfil" element={<Profile />} />
+          <Route path="/escolas" element={<Schools />} />
           <Route path="/conhecimento" element={<PriorKnowledge />} />
           <Route path="/percepcoes" element={<Perceptions />} />
           <Route path="/experiencias" element={<Experiences />} />

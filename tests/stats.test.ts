@@ -70,7 +70,7 @@ describe('tabela de contingência', () => {
     const ct = crosstab(ps, Q('ano'), Q('q1_misoginia'))
     expect(ct.n).toBe(3)
     expect(ct.excluded).toBe(1)
-    expect(ct.rowTotals).toEqual([2, 1])
+    expect(ct.rowTotals).toEqual([2, 1, 0, 0]) // 1º, 2º, 3º ano, Outro
     const i = ct.rowLabels.indexOf('1º ano do Ensino Médio')
     const j = ct.colLabels.indexOf('Nunca ouvi falar.')
     expect(cellValue(ct, i, j, 'count')).toBe(1)

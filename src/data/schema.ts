@@ -1,8 +1,9 @@
 /**
  * Catálogo dos campos da planilha "Base Questionarios.xlsx".
  *
- * Estrutura identificada (aba "Página1", intervalo A1:R22):
- *  - Linha 1: cabeçalhos; linhas 2–22: 21 participantes (uma linha = um participante).
+ * Estrutura identificada (aba "Página1", intervalo A1:R51):
+ *  - Linha 1: cabeçalhos; linhas 2–51: 50 participantes (uma linha = um participante),
+ *    de duas escolas (Brasília: linhas 2–22; EEEFM Mariana: linhas 23–51).
  *  - Colunas A–C: perfil (idade, gênero, ano escolar).
  *  - Colunas D–L: Questionário 01 (diagnóstico inicial).
  *  - Colunas M–Q: Questionário 02 (avaliação após a apresentação).
@@ -88,6 +89,7 @@ export const QUESTIONS: QuestionDef[] = [
     alternatives: [
       { label: '13 a 15 anos', group: 'v' },
       { label: '16 a 18 anos', group: 'v' },
+      { label: '19 anos ou mais', group: 'v' },
     ],
   },
   {
@@ -104,12 +106,17 @@ export const QUESTIONS: QuestionDef[] = [
     alternatives: [
       { label: '1º ano do Ensino Médio', group: 'v' },
       { label: '2º ano do Ensino Médio', group: 'v' },
+      { label: '3º ano do Ensino Médio', group: 'v' },
+      { label: 'Outro', group: 'v' },
     ],
   },
   {
     id: 'escola', questionnaire: 'perfil', column: 'R', header: 'Escola', short: 'Escola', theme: 'perfil',
     groups: [{ id: 'v', label: 'Valor' }],
-    alternatives: [{ label: 'Brasília', group: 'v' }],
+    alternatives: [
+      { label: 'Brasília', group: 'v' },
+      { label: 'EEEFM Mariana', group: 'v' },
+    ],
   },
 
   // ---------------------------------------------------------- Questionário 01
@@ -136,12 +143,14 @@ export const QUESTIONS: QuestionDef[] = [
       { id: 'ideia', label: 'Tem uma ideia parcial' },
       { id: 'ouviu', label: 'Ouviu falar, sem saber qual é' },
       { id: 'nao_sabe', label: 'Não sabe qual é a relação' },
+      { id: 'nunca_pensou', label: 'Nunca havia pensado sobre isso', uncertain: true },
     ],
     alternatives: [
       { label: 'Sim, sei explicar essa relação.', group: 'sabe' },
       { label: 'Tenho uma ideia, mas não sei explicar completamente.', group: 'ideia' },
       { label: 'Já ouvi falar sobre essa relação, mas não sei exatamente qual é.', group: 'ouviu' },
       { label: 'Não sei qual é a relação.', group: 'nao_sabe' },
+      { label: 'Nunca havia pensado sobre isso', group: 'nunca_pensou' },
     ],
   },
   {
@@ -202,11 +211,12 @@ export const QUESTIONS: QuestionDef[] = [
     id: 'q1_silenciamento', questionnaire: 'q1', column: 'K', theme: 'percepcao', groupKind: 'Tipo de resposta',
     header: 'Na sua percepção, mulheres e meninas têm suas opiniões silenciadas, desconsideradas ou recebem menos espaço para se expressar em determinadas situações?',
     short: 'Silenciamento de mulheres e meninas',
-    groups: [POLARITY.afirmativa, POLARITY.baixa],
+    groups: [POLARITY.afirmativa, POLARITY.baixa, POLARITY.negativa],
     alternatives: [
       { label: 'Sim, frequentemente.', group: 'afirmativa' },
       { label: 'Sim, algumas vezes.', group: 'afirmativa' },
       { label: 'Raramente.', group: 'baixa' },
+      { label: 'Não.', group: 'negativa' },
     ],
   },
   {
@@ -229,11 +239,13 @@ export const QUESTIONS: QuestionDef[] = [
     groups: [
       { id: 'melhor', label: 'Relata compreender melhor (muito ou um pouco)' },
       { id: 'mesma', label: 'Compreensão permaneceu a mesma' },
+      { id: 'incerteza', label: 'Não sabe responder', uncertain: true },
     ],
     alternatives: [
       { label: 'Sim, compreendo muito melhor.', group: 'melhor' },
       { label: 'Sim, compreendo um pouco melhor.', group: 'melhor' },
       { label: 'Minha compreensão permaneceu a mesma.', group: 'mesma' },
+      { label: 'Não sei responder.', group: 'incerteza' },
     ],
   },
   {
@@ -258,12 +270,14 @@ export const QUESTIONS: QuestionDef[] = [
       { id: 'identifica', label: 'Declara identificar (com facilidade ou em algumas situações)' },
       { id: 'dificuldade', label: 'Declara ainda ter dificuldade' },
       { id: 'sem_mudanca', label: 'Não percebeu mudança na capacidade' },
+      { id: 'incerteza', label: 'Não sabe responder', uncertain: true },
     ],
     alternatives: [
       { label: 'Sim, com facilidade.', group: 'identifica' },
       { label: 'Sim, em algumas situações.', group: 'identifica' },
       { label: 'Ainda tenho dificuldade para identificá-las.', group: 'dificuldade' },
       { label: 'Não percebi mudança na minha capacidade de identificar essas situações.', group: 'sem_mudanca' },
+      { label: 'Não sei responder.', group: 'incerteza' },
     ],
   },
   {
@@ -273,11 +287,13 @@ export const QUESTIONS: QuestionDef[] = [
     groups: [
       { id: 'importante', label: 'Muito importante ou importante' },
       { id: 'pouco', label: 'Pouco importante' },
+      { id: 'incerteza', label: 'Não sabe responder', uncertain: true },
     ],
     alternatives: [
       { label: 'Muito importante.', group: 'importante' },
       { label: 'Importante.', group: 'importante' },
       { label: 'Pouco importante.', group: 'pouco' },
+      { label: 'Não sei responder.', group: 'incerteza' },
     ],
   },
   {
@@ -300,7 +316,8 @@ export const QUESTIONS: QuestionDef[] = [
 
 export const QUESTION_BY_ID = Object.fromEntries(QUESTIONS.map((q) => [q.id, q])) as Record<QuestionId, QuestionDef>
 
-export const PROFILE_IDS: QuestionId[] = ['idade', 'genero', 'ano', 'escola']
+/** Ordem dos filtros de perfil: escola primeiro, por ser o principal recorte da amostra. */
+export const PROFILE_IDS: QuestionId[] = ['escola', 'idade', 'genero', 'ano']
 export const Q1_IDS = QUESTIONS.filter((q) => q.questionnaire === 'q1').map((q) => q.id)
 export const Q2_IDS = QUESTIONS.filter((q) => q.questionnaire === 'q2').map((q) => q.id)
 

@@ -3,7 +3,7 @@ import { FileUp, RotateCcw } from 'lucide-react'
 import { useAnalysis } from '../state/AppState'
 import { useData } from '../state/AppState'
 import { QUESTIONNAIRE_LABEL } from '../data/schema'
-import { frequency } from '../stats/stats'
+import { frequency, nesting } from '../stats/stats'
 import { formatDateTime, formatInt } from '../stats/format'
 import { Badge, Card, Notice, PageHeader, SectionTitle } from '../components/common/ui'
 import type { Severity } from '../data/normalize'
@@ -37,6 +37,12 @@ export function Methodology() {
   const q1 = qs.filter((x) => x.questionnaire === 'q1')
   const q2 = qs.filter((x) => x.questionnaire === 'q2')
   const validAnswers = (list: typeof qs) => list.reduce((s, x) => s + frequency(all, x).valid, 0)
+  const byId = (id: string) => dataset.questions.find((x) => x.id === id)!
+  const schools = frequency(all, byId('escola')).rows.filter((r) => r.count > 0)
+  const anoNest = nesting(all, byId('escola'), byId('ano'))
+  const smallGroups = (['escola', 'idade', 'genero', 'ano'] as const).flatMap((id) =>
+    frequency(all, byId(id)).rows.filter((r) => r.count > 0 && r.count < 5).map((r) => `${byId(id).short.replace(' declarado', '')} “${r.label}” (${r.count})`),
+  )
   const sorted = [...dataset.issues].sort((a, b) => ['erro', 'aviso', 'info'].indexOf(a.severity) - ['erro', 'aviso', 'info'].indexOf(b.severity))
 
   return (
@@ -107,8 +113,8 @@ export function Methodology() {
           <p>Cada linha da planilha representa um participante, com as respostas aos dois questionários. Como as perguntas são de escolha única, o número de respostas válidas de uma pergunta é igual ao número de participantes que a responderam.</p>
           <ul className="list-disc space-y-1 pl-5 tabular">
             <li>Participantes distintos: <strong>{formatInt(all.length)}</strong> (identificadores P01–P{String(all.length).padStart(2, '0')} gerados na importação).</li>
-            <li>Respostas válidas no Q1: <strong>{formatInt(validAnswers(q1))}</strong> ({q1.length} perguntas × participantes).</li>
-            <li>Respostas válidas no Q2: <strong>{formatInt(validAnswers(q2))}</strong> ({q2.length} perguntas × participantes).</li>
+            <li>Respostas válidas no Q1: <strong>{formatInt(validAnswers(q1))}</strong> ({q1.length} perguntas × {formatInt(all.length)} participantes = {formatInt(q1.length * all.length)}, menos {formatInt(q1.length * all.length - validAnswers(q1))} ausente(s)).</li>
+            <li>Respostas válidas no Q2: <strong>{formatInt(validAnswers(q2))}</strong> ({q2.length} perguntas × {formatInt(all.length)} participantes = {formatInt(q2.length * all.length)}, menos {formatInt(q2.length * all.length - validAnswers(q2))} ausente(s)).</li>
           </ul>
           <p>Os cartões e gráficos informam sempre o denominador: “respostas válidas” da pergunta no recorte filtrado; nas tabelas de contingência, participantes com resposta válida nas duas variáveis.</p>
         </Block>
@@ -133,8 +139,11 @@ export function Methodology() {
 
         <Block title="Limitações">
           <ul className="list-disc space-y-1 pl-5">
-            <li>Amostra pequena ({formatInt(all.length)} participantes) e de uma única escola; resultados não são generalizáveis e recortes por grupo ficam rapidamente instáveis.</li>
-            <li>Grupos desbalanceados (ex.: 2º ano e 16–18 anos com poucos participantes).</li>
+            <li>Amostra pequena ({formatInt(all.length)} participantes) e {schools.length > 1 ? `de apenas ${schools.length} escolas (${schools.map((s) => `${s.label}: ${formatInt(s.count)}`).join('; ')})` : 'de uma única escola'}; resultados não são generalizáveis e recortes por grupo ficam rapidamente instáveis.</li>
+            {anoNest.nested && (
+              <li>Escola e série escolar estão sobrepostas ({anoNest.byOuter.map((x) => `${x.outer}: ${x.inner.join(', ')}`).join('; ')}): diferenças entre escolas não podem ser separadas de diferenças entre séries e idades.</li>
+            )}
+            {smallGroups.length > 0 && <li>Grupos com menos de 5 participantes: {smallGroups.join('; ')}.</li>}
             <li>Sem grupo de controle nem pré/pós com as mesmas perguntas: não é possível atribuir causalidade à apresentação.</li>
             <li>Todas as medidas são autorrelatadas (conhecimento, compreensão e capacidade declarados), sujeitas a desejabilidade social.</li>
             <li>Experiências relatadas não medem a incidência de violência nas escolas.</li>

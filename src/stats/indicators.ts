@@ -20,6 +20,11 @@ export const INDICATORS = {
   dificuldade: { id: 'dificuldade', label: 'Declara ainda ter dificuldade para identificar situações', questionId: 'q2_identificar', groupId: 'dificuldade' },
   mudouPercepcao: { id: 'mudouPercepcao', label: 'Relatou mudança (significativa ou parcial) de percepção', questionId: 'q2_percepcao', groupId: 'mudou' },
   importante: { id: 'importante', label: 'Considera a educação em DH muito importante ou importante', questionId: 'q2_importancia', groupId: 'importante' },
+  percebeTratamento: { id: 'percebeTratamento', label: 'Percebe tratamento diferente entre homens e mulheres em razão do gênero', questionId: 'q1_tratamento', groupId: 'afirmativa' },
+  percebeEspacos: { id: 'percebeEspacos', label: 'Percebe mais dificuldades para mulheres em espaços “masculinos” (frequentemente ou algumas vezes)', questionId: 'q1_espacos', groupId: 'afirmativa' },
+  percebeSilenciamento: { id: 'percebeSilenciamento', label: 'Percebe silenciamento de mulheres e meninas (frequentemente ou algumas vezes)', questionId: 'q1_silenciamento', groupId: 'afirmativa' },
+  presenciou: { id: 'presenciou', label: 'Relata ter presenciado violência ou discriminação de gênero', questionId: 'q1_presenciou', groupId: 'presenciou' },
+  igualdadeTotal: { id: 'igualdadeTotal', label: 'Concorda totalmente com direitos e tratamento igualitários', questionId: 'q1_igualdade', groupId: 'afirmativa' },
 } satisfies Record<string, IndicatorDef>
 
 export type IndicatorId = keyof typeof INDICATORS

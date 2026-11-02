@@ -52,7 +52,7 @@ export function Perceptions() {
           <div className="mb-3 max-w-md">
             <SelectField label="Pergunta" value={crossQ} onChange={(v) => setCrossQ(v as QuestionId)} options={opts} />
           </div>
-          <CrossByDimension key={crossQ} qid={crossQ} dims={['ano', 'idade', 'genero']} />
+          <CrossByDimension key={crossQ} qid={crossQ} dims={['escola', 'ano', 'idade', 'genero']} />
 
           <SectionTitle description="Mapa de calor entre duas perguntas de percepção. Cada participante entra uma única vez, na combinação das suas duas respostas.">Matriz entre percepções</SectionTitle>
           <ChartCard

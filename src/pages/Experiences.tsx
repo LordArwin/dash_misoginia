@@ -44,8 +44,8 @@ export function Experiences() {
           <SectionTitle>Distribuição das alternativas</SectionTitle>
           <QuestionCard qid="q1_presenciou" showGroups />
 
-          <SectionTitle description="Comparação descritiva entre grupos; com poucos participantes por grupo, as diferenças devem ser lidas com cautela.">Cruzamentos por série e faixa etária</SectionTitle>
-          <CrossByDimension qid="q1_presenciou" dims={['ano', 'idade', 'genero']} />
+          <SectionTitle description="Comparação descritiva entre grupos; com poucos participantes por grupo, as diferenças devem ser lidas com cautela.">Cruzamentos por escola, série, faixa etária e gênero</SectionTitle>
+          <CrossByDimension qid="q1_presenciou" dims={['escola', 'ano', 'idade', 'genero']} />
         </SampleGuard>
       </ScopeGate>
     </>
